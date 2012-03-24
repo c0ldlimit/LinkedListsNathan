@@ -79,6 +79,7 @@ void printList(Node* head)
         cout << currentNode->data << endl;
         currentNode=currentNode->next;
     }
+    cout << endl;
 }
 
 int main()
@@ -111,8 +112,8 @@ int main()
     // REVERSE
     insert((headA.next),15);
     Node* reverseHead;
-    printList(&headA);
+    printList(&headA); // 5 10 15 20
     reverseHead = reverse(&headA);
-    printList(reverseHead);
+    printList(reverseHead); // 20 15 10 5
 
 }
