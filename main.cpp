@@ -157,12 +157,13 @@ Node* reverse(Node* head)
         Node* nextNode = head->next;
         head->next = NULL;
         Node* temp;
-        while(nextNode!=NULL)
+        while(nextNode!=NULL) // stop when the nextNode is NULL
         {
-            temp = nextNode->next;
-            nextNode->next = currentNode;
-            currentNode = nextNode;
-            nextNode = temp;
+            temp = nextNode->next; // store location of the node adjacent to nextNode
+            nextNode->next = currentNode;  // nextNode now points to currentNode
+            // equivalent state of currentNode and nextNode that have not been modified
+            currentNode = nextNode; // currentNode becomes nextNode (increment)
+            nextNode = temp; // nextNode becomes the node it was adjacent to
         }
         return currentNode;
     }
