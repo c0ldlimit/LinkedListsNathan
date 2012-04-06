@@ -29,13 +29,32 @@ void append(Node* head, int data)
     (currentNode->next)->next = NULL;
 }
 
-// wouldn't we need to reference multiple nodes
-// to remove a node in the middle of the list?
-Node* remove(Node* head)
+// removes the first node where data matches the input parameter
+Node* remove(Node* head,int data)
 {
-    Node* newHead = head->next;
-    delete head;
-    return newHead;
+    if (head->data==data)
+    {
+        Node* newHead = head->next;
+        delete head;
+        return newHead;
+    }
+    else
+    {
+        Node* currentNode = head->next;
+        Node* prevNode = head;
+        while(currentNode!=NULL)
+        {
+            if (currentNode->data == data)
+            {
+                prevNode->next=currentNode->next;
+                delete currentNode;
+                break;
+            }
+            prevNode = currentNode;
+            currentNode = currentNode->next;
+        }
+        return head;
+    }
 }
 
 void remove_all(Node* head)
@@ -111,8 +130,8 @@ int main()
     printList(&head); // 5 10 20 30
 
     // REMOVE
-    Node* newHead = remove(&head);
-    printList(newHead); // 10 20 30
+    Node* newHead = remove(&head,20);
+    printList(newHead); // 5 10 30
 
     // REMOVE ALL
     remove_all(newHead);
