@@ -147,18 +147,25 @@ Node* find(Node*head,int data)
 // I think you need at least 3 nodes to reverse a linked list
 Node* reverse(Node* head)
 {
-    Node* currentNode = head;
-    Node* nextNode = head->next;
-    head->next = NULL;
-    Node* temp;
-    while(nextNode!=NULL)
+    if (head==NULL || head->next==NULL)
     {
-        temp = nextNode->next;
-        nextNode->next = currentNode;
-        currentNode = nextNode;
-        nextNode = temp;
+        return head;
     }
-    return currentNode;
+    else
+    {
+        Node* currentNode = head;
+        Node* nextNode = head->next;
+        head->next = NULL;
+        Node* temp;
+        while(nextNode!=NULL)
+        {
+            temp = nextNode->next;
+            nextNode->next = currentNode;
+            currentNode = nextNode;
+            nextNode = temp;
+        }
+        return currentNode;
+    }
 }
 
 
@@ -209,5 +216,12 @@ int main()
     printList(&headA); // 5 10 20
     reverseHead = reverse(&headA);
     printList(reverseHead); // 20 10 5
+
+    cout << "REVERSE 2 NODES" << endl;
+    reverseHead = remove(reverseHead,10);
+    printList(reverseHead);
+    reverseHead = reverse(reverseHead);
+    printList(reverseHead);
+
 
 }
