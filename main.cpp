@@ -8,64 +8,123 @@ struct Node
     Node* next;
 };
 
+void printList(Node* head)
+{
+    Node* currentNode = head;
+    while(currentNode!=NULL)
+    {
+        cout << currentNode->data << endl;
+        currentNode=currentNode->next;
+    }
+    cout << endl;
+}
+
 void insert(Node* head, int data)
 {
-    Node* oldNext = head->next;
-    head->next = new Node;
-    (*(*head).next).data = data;
-    (*(*head).next).next = oldNext;
+    if (head!=NULL)
+    {
+        Node* oldNext = head->next;
+        head->next = new Node;
+        (*(*head).next).data = data;
+        (*(*head).next).next = oldNext;
+    }
+
 }
 
 void append(Node* head, int data)
 {
-    // find end of list
-    Node* currentNode = head;
-    while(currentNode->next!=NULL)
+    if (head!=NULL)
     {
-        currentNode=currentNode->next;
+        // find end of list
+        Node* currentNode = head;
+        while(currentNode->next!=NULL)
+        {
+            currentNode=currentNode->next;
+        }
+        currentNode->next = new Node;
+        (currentNode->next)->data = data;
+        (currentNode->next)->next = NULL;
     }
-    currentNode->next = new Node;
-    (currentNode->next)->data = data;
-    (currentNode->next)->next = NULL;
+
 }
 
 // removes the first node where data matches the input parameter
 Node* remove(Node* head,int data)
 {
-    if (head->data==data)
+    if (head==NULL)
     {
-        Node* newHead = head->next;
-        delete head;
-        return newHead;
+        return head;
     }
     else
     {
-        Node* currentNode = head->next;
-        Node* prevNode = head;
+        if (head->data==data)
+        {
+            Node* newHead = head->next;
+            delete head;
+            return newHead;
+        }
+        else
+        {
+            Node* currentNode = head->next;
+            Node* prevNode = head;
+            while(currentNode!=NULL)
+            {
+                if (currentNode->data == data)
+                {
+                    prevNode->next=currentNode->next;
+                    delete currentNode;
+                    break;
+                }
+                prevNode = currentNode;
+                currentNode = currentNode->next;
+            }
+            return head;
+        }
+    }
+
+}
+
+// removes all nodes with data matching int data
+Node* remove_all(Node* head,int data)
+{
+    if (head==NULL)
+    {
+        return head;
+    }
+    else
+    {
+        Node*newHead = head;
+        Node* currentNode = head;
+        Node* prevNode = NULL;
+        Node* tempNode = NULL;
         while(currentNode!=NULL)
         {
             if (currentNode->data == data)
             {
-                prevNode->next=currentNode->next;
-                delete currentNode;
-                break;
-            }
-            prevNode = currentNode;
-            currentNode = currentNode->next;
-        }
-        return head;
-    }
-}
+                if (prevNode==NULL)
+                {
+                    newHead = head->next;
+                }
+                else
+                {
+                    prevNode->next=currentNode->next;
+                }
 
-void remove_all(Node* head)
-{
-    Node* currentNode = head;
-    while(currentNode!=NULL)
-    {
-        Node* delNode = currentNode;
-        delete delNode;
-        currentNode = currentNode->next;
+                tempNode = currentNode;
+                currentNode = currentNode->next;
+               // printList(newHead);
+                delete tempNode;
+                // printList(newHead);
+            }
+            else
+            {
+                prevNode = currentNode;
+                currentNode = currentNode->next;
+            }
+        }
+        return newHead;
     }
+
 }
 
 Node* find(Node*head,int data)
@@ -103,16 +162,7 @@ Node* reverse(Node* head)
 }
 
 
-void printList(Node* head)
-{
-    Node* currentNode = head;
-    while(currentNode!=NULL)
-    {
-        cout << currentNode->data << endl;
-        currentNode=currentNode->next;
-    }
-    cout << endl;
-}
+
 
 int main()
 {
@@ -121,22 +171,30 @@ int main()
     head.next = NULL;
 
     // INSERT
+    cout << "INSERT" << endl;
     insert(&head,10);
     insert((head.next),20);
     printList(&head); // 5 10 20
 
     // APPEND
+    cout << "APPEND" << endl;
     append(&head,30);
-    printList(&head); // 5 10 20 30
+    append(&head,20);
+    append(&head,20);
+    printList(&head); // 5 10 20 30 20 20
 
     // REMOVE
+    cout << "REMOVE" << endl;
     Node* newHead = remove(&head,20);
-    printList(newHead); // 5 10 30
+    printList(newHead); // 5 10 30 20 20
 
     // REMOVE ALL
-    remove_all(newHead);
+    cout << "REMOVE ALL" << endl;
+    newHead = remove_all(newHead,20);
+    printList(newHead); // 5 10 30
 
     // FIND
+    cout << "FIND" <<endl;
     Node headA;
     headA.data = 5;
     headA.next = NULL;
@@ -146,10 +204,10 @@ int main()
     printList(foundNode); // 20
 
     // REVERSE
-    insert((headA.next),15);
+    cout << "REVERSE" << endl;
     Node* reverseHead;
-    printList(&headA); // 5 10 15 20
+    printList(&headA); // 5 10 20
     reverseHead = reverse(&headA);
-    printList(reverseHead); // 20 15 10 5
+    printList(reverseHead); // 20 10 5
 
 }
