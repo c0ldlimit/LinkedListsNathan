@@ -16,6 +16,19 @@ void insert(Node* head, int data)
     (*(*head).next).next = oldNext;
 }
 
+void append(Node* head, int data)
+{
+    // find end of list
+    Node* currentNode = head;
+    while(currentNode->next!=NULL)
+    {
+        currentNode=currentNode->next;
+    }
+    currentNode->next = new Node;
+    (currentNode->next)->data = data;
+    (currentNode->next)->next = NULL;
+}
+
 // wouldn't we need to reference multiple nodes
 // to remove a node in the middle of the list?
 Node* remove(Node* head)
@@ -93,9 +106,13 @@ int main()
     insert((head.next),20);
     printList(&head); // 5 10 20
 
+    // APPEND
+    append(&head,30);
+    printList(&head); // 5 10 20 30
+
     // REMOVE
     Node* newHead = remove(&head);
-    printList(newHead); // 10 20
+    printList(newHead); // 10 20 30
 
     // REMOVE ALL
     remove_all(newHead);
